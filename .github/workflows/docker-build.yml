@@ -1,0 +1,39 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build & Push Game Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./game-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/game-service:latest
+
+      - name: Build & Push Order Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./order-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/order-service:latest
+
+      - name: Build & Push Analytics Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./analytics-service
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/analytics-service:latest
