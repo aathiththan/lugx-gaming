@@ -22,5 +22,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
           tags: aathiththan/lugx-frontend:latest
+          build-args: |
+            CACHEBUST=${{ github.run_id }}
+          
