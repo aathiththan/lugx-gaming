@@ -418,5 +418,45 @@ https://templatemo.com/tm-589-lugx-gaming
   <script src="assets/js/counter.js"></script>
   <script src="assets/js/custom.js"></script>
 
-  </body>
+  <script>
+    const ANALYTICS_API = "http://localhost:3003/analytics";
+    let sessionStart = Date.now();
+    let maxScroll = 0;
+
+    function sendEvent(eventType, extraData = {}) {
+      fetch(ANALYTICS_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: window.location.pathname,
+          eventType: eventType,
+          timestamp: new Date().toISOString(),
+          ...extraData
+        }),
+      }).catch((err) => console.error("Analytics error:", err));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      sendEvent("page_view");
+      document.addEventListener("click", (e) => {
+        sendEvent("click", { element: e.target.tagName });
+      });
+      window.addEventListener("scroll", () => {
+        let scrollPercent = Math.round((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+        if (scrollPercent > maxScroll) {
+          maxScroll = scrollPercent;
+          let bucket = Math.floor(maxScroll / 25) * 25;
+          if ([25, 50, 75, 100].includes(bucket)) {
+            sendEvent("scroll_depth", { depth: `${bucket}%` });
+          }
+        }
+      });
+    });
+
+    window.addEventListener("beforeunload", () => {
+      const sessionTime = Date.now() - sessionStart;
+      sendEvent("session_time", { durationMs: sessionTime });
+    });
+  </script>
+</body>
 </html>
