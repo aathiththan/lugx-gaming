@@ -42,13 +42,17 @@ const clickhouse = createClient({
 // POST endpoint to insert analytics data
 app.post('/analytics', async (req, res) => {
   try {
+    const timestamp = req.body.timestamp
+      ? new Date(req.body.timestamp).toISOString()
+      : new Date().toISOString();
+
     await clickhouse.insert({
       table: 'pageviews',
       values: [
         {
           url: req.body.url || '',
           eventType: req.body.eventType || '',
-          timestamp: req.body.timestamp ? new Date(req.body.timestamp) : new Date(),
+          timestamp: timestamp, // formatted as ISO string
           element: req.body.element || '',
           durationMs: req.body.durationMs || 0,
         },
