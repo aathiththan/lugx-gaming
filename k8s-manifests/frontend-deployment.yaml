@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-deployment
+  labels:
+    app: frontend
 spec:
   replicas: 1
   selector:
@@ -25,15 +27,3 @@ spec:
       - name: nginx-config
         configMap:
           name: frontend-nginx-conf
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-spec:
-  type: LoadBalancer
-  selector:
-    app: frontend
-  ports:
-  - port: 80
-    targetPort: 80
