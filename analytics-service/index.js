@@ -61,13 +61,14 @@ app.post('/analytics', async (req, res) => {
       element: req.body.element || '',
       durationMs: req.body.durationMs || 0,
     };
-
+    // --- NEW DEBUG LOG ---
+    console.log("📌 Inserting event into ClickHouse:", event);
     await clickhouse.insert({
       table: 'pageviews',
       values: [event],   // <-- direct array, not string
       format: 'JSONEachRow',
     });
-
+    console.log("✅ Insert successful");
     res.status(201).json({ message: 'Analytics event stored successfully' });
   } catch (err) {
     console.error('Error inserting data:', err.message || err);
