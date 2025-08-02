@@ -3,20 +3,20 @@ kind: Deployment
 metadata:
   name: analytics-service
   labels:
-    app: analytics
+    app: analytics-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: analytics
+      app: analytics-service
   template:
     metadata:
       labels:
-        app: analytics
+        app: analytics-service
     spec:
       containers:
       - name: analytics-service
-        image: aathiththan/analytics-service:latest   # <- Replace with your pushed image name
+        image: aathiththan/analytics-service:latest   # <- Replace with your pushed image name if needed
         ports:
         - containerPort: 3003
         env:
@@ -34,7 +34,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: analytics
+    app: analytics-service
   ports:
   - protocol: TCP
     port: 3003
