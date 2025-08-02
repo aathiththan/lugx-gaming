@@ -50,6 +50,7 @@ function formatTimestamp(isoString) {
 // POST endpoint to insert analytics data
 app.post('/analytics', async (req, res) => {
   try {
+    console.log('Received analytics event:', req.body);   //
     const timestamp = req.body.timestamp
       ? formatTimestamp(req.body.timestamp)
       : formatTimestamp(new Date().toISOString());
