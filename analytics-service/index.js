@@ -32,7 +32,7 @@ const clickhouse = createClient({
         ENGINE = MergeTree()
         ORDER BY timestamp
       `,
-      format: 'JSON',
+      
     });
     console.log('ClickHouse table ready');
   } catch (err) {
