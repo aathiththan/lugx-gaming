@@ -21,11 +21,13 @@ spec:
         - containerPort: 3003
         env:
         - name: CLICKHOUSE_HOST
-          value: "http://clickhouse:8123"
+          value: "https://nu44iyuzm5.us-west-2.aws.clickhouse.cloud"
         - name: CLICKHOUSE_USER
           value: "default"
         - name: CLICKHOUSE_PASS
-          value: ""
+          value: "~I0ydu1ME4arP"
+        - name: CLICKHOUSE_DB
+          value: "pageviews"
 ---
 apiVersion: v1
 kind: Service
