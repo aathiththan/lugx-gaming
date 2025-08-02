@@ -64,7 +64,7 @@ app.post('/analytics', async (req, res) => {
 
     await clickhouse.insert({
       table: 'pageviews',
-      values: JSON.stringify([event]),
+      values: [event],   // <-- direct array, not string
       format: 'JSONEachRow',
     });
 
