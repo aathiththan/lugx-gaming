@@ -8,11 +8,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// ClickHouse client (using URL for cloud or local)
+// ClickHouse client (using database from env)
 const clickhouse = createClient({
   url: process.env.CLICKHOUSE_HOST || 'https://nu44iyuzm5.us-west-2.aws.clickhouse.cloud:8443',
   username: process.env.CLICKHOUSE_USER || 'default',
-  password: process.env.CLICKHOUSE_PASS || '~I0ydu1ME4arP',
+  password: process.env.CLICKHOUSE_PASS || '',
+  database: process.env.CLICKHOUSE_DB || 'default'
 });
 
 // Create table if not exists
@@ -35,7 +36,7 @@ const clickhouse = createClient({
     });
     console.log('ClickHouse table ready');
   } catch (err) {
-    console.error('Error creating ClickHouse table:', err);
+    console.error('Error creating ClickHouse table:', err.message || err);
   }
 })();
 
@@ -69,7 +70,7 @@ app.post('/analytics', async (req, res) => {
 
     res.status(201).json({ message: 'Analytics event stored successfully' });
   } catch (err) {
-    console.error('Error inserting data:', err);
+    console.error('Error inserting data:', err.message || err);
     res.status(500).json({ error: 'Failed to insert data' });
   }
 });
@@ -85,7 +86,7 @@ app.get('/analytics', async (req, res) => {
     const rows = await result.json();
     res.status(200).json(rows);
   } catch (err) {
-    console.error('Error fetching data:', err);
+    console.error('Error fetching data:', err.message || err);
     res.status(500).json({ error: 'Failed to fetch analytics data' });
   }
 });
