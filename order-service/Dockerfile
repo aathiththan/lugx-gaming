@@ -1,10 +1,12 @@
-FROM python:3.9-slim
+# Use Node.js LTS
+FROM node:18
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY package*.json ./
+RUN npm install --production
 
 COPY . .
 
-CMD ["python", "app.py"]
+EXPOSE 3002
+CMD ["npm", "start"]
