@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
+  namespace: lugx
   labels:
     app: frontend
 spec:
@@ -17,6 +18,7 @@ spec:
       containers:
       - name: frontend
         image: aathiththan/lugx-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:
@@ -27,3 +29,16 @@ spec:
       - name: nginx-config
         configMap:
           name: frontend-nginx-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: lugx
+spec:
+  selector:
+    app: frontend
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
