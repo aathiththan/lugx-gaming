@@ -8,11 +8,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// ClickHouse client (use url instead of deprecated host)
+// ClickHouse client (using URL for cloud or local)
 const clickhouse = createClient({
-  url: process.env.CLICKHOUSE_HOST || 'http://clickhouse:8123',
+  url: process.env.CLICKHOUSE_HOST || 'https://nu44iyuzm5.us-west-2.aws.clickhouse.cloud:8443',
   username: process.env.CLICKHOUSE_USER || 'default',
-  password: process.env.CLICKHOUSE_PASS || '',
+  password: process.env.CLICKHOUSE_PASS || '~I0ydu1ME4arP',
 });
 
 // Create table if not exists
@@ -53,17 +53,17 @@ app.post('/analytics', async (req, res) => {
       ? formatTimestamp(req.body.timestamp)
       : formatTimestamp(new Date().toISOString());
 
+    const event = {
+      url: req.body.url || '',
+      eventType: req.body.eventType || '',
+      timestamp: timestamp,
+      element: req.body.element || '',
+      durationMs: req.body.durationMs || 0,
+    };
+
     await clickhouse.insert({
       table: 'pageviews',
-      values: [
-        {
-          url: req.body.url || '',
-          eventType: req.body.eventType || '',
-          timestamp: timestamp,
-          element: req.body.element || '',
-          durationMs: req.body.durationMs || 0,
-        },
-      ],
+      values: JSON.stringify([event]),
       format: 'JSONEachRow',
     });
 
