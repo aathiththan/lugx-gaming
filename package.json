@@ -1,0 +1,27 @@
+{
+  "name": "lugx-gaming",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aathiththan/lugx-gaming.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aathiththan/lugx-gaming/issues"
+  },
+  "homepage": "https://github.com/aathiththan/lugx-gaming#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "jest": "^30.0.5"
+  }
+}
