@@ -2,7 +2,7 @@ name: Deploy and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
     - cron: "0 3 * * *"  # Daily 3 AM scheduled run
 
@@ -68,6 +68,13 @@ jobs:
         kubectl rollout status deployment/order-service -n lugx
         kubectl rollout status deployment/analytics-service -n lugx
 
+    # --- Get current frontend LoadBalancer URL ---
+    - name: Get frontend LoadBalancer URL
+      id: get_url
+      run: |
+        URL=$(kubectl get svc frontend-service -n lugx -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        echo "BASE_URL=http://$URL" >> $GITHUB_ENV
+
     # --- Run Integration Tests ---
     - name: Install Node.js
       uses: actions/setup-node@v3
@@ -78,3 +85,5 @@ jobs:
       run: |
         npm install
         npm test
+      env:
+        BASE_URL: ${{ env.BASE_URL }}
