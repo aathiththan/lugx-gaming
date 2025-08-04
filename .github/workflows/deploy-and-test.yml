@@ -57,16 +57,16 @@ jobs:
     # --- Deploy using latest DockerHub images (Rolling Update) ---
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/frontend-deployment frontend=aathiththan/lugx-frontend:latest
-        kubectl set image deployment/game-service game-service=aathiththan/game-service:latest
-        kubectl set image deployment/order-service order-service=aathiththan/order-service:latest
-        kubectl set image deployment/analytics-service analytics-service=aathiththan/analytics-service:latest
+        kubectl set image deployment/frontend-deployment frontend=aathiththan/lugx-frontend:latest -n lugx
+        kubectl set image deployment/game-service game-service=aathiththan/game-service:latest -n lugx
+        kubectl set image deployment/order-service order-service=aathiththan/order-service:latest -n lugx
+        kubectl set image deployment/analytics-service analytics-service=aathiththan/analytics-service:latest -n lugx
 
         # Wait for rollout completion
-        kubectl rollout status deployment/frontend-deployment
-        kubectl rollout status deployment/game-service
-        kubectl rollout status deployment/order-service
-        kubectl rollout status deployment/analytics-service
+        kubectl rollout status deployment/frontend-deployment -n lugx
+        kubectl rollout status deployment/game-service -n lugx
+        kubectl rollout status deployment/order-service -n lugx
+        kubectl rollout status deployment/analytics-service -n lugx
 
     # --- Run Integration Tests ---
     - name: Install Node.js
