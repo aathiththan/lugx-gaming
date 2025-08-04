@@ -121,21 +121,6 @@ This project is developed as part of academic coursework and is **not intended f
 
 ---
 
-## How to Add to GitHub
-
-1. **In PowerShell (repo root):**
-   ```powershell
-   New-Item README.md -ItemType File
-   ```
-
-2. Paste the above content and save.
-
-3. **Commit and push:**
-   ```powershell
-   git add README.md
-   git commit -m "Added README.md"
-   git push origin main
-   ```
 
    
   
